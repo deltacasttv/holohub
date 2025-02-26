@@ -15,16 +15,17 @@
 
 import os
 from argparse import ArgumentParser
+
 from holoscan.core import Application
-from holoscan.operators import  FormatConverterOp, VideoStreamReplayerOp
+from holoscan.operators import FormatConverterOp, VideoStreamReplayerOp
+from holoscan.resources import BlockMemoryPool, MemoryStorageType, UnboundedAllocator
 
 from holohub.videomaster import VideoMasterTransmitterOp
 
-from holoscan.resources import BlockMemoryPool, UnboundedAllocator, MemoryStorageType
 
 class DeltacastTransmitterApp(Application):
     def __init__(self, data_path):
-        """Initiliaze the deltacast transmitter application.
+        """Initialize the deltacast transmitter application.
         Parameters
         ----------
             data_path (str): Path to the data directory. The data will be transmit on the deltacast card.
@@ -51,20 +52,38 @@ class DeltacastTransmitterApp(Application):
             block_size=source_block_size,
             num_blocks=source_block_count,
         )
-        
+
         # Initialize operators
-        source = VideoStreamReplayerOp(self, name="replayer", directory = self.data_path, **self.kwargs("replayer"))
-        
-        format_converter = FormatConverterOp(self, name="format_converter", pool = BlockMemoryPool(self, name = "pool", **source_pool_kwargs), **self.kwargs("output_format_converter"))
-        
-        visualizer = VideoMasterTransmitterOp(self, name="videomaster", pool = UnboundedAllocator(self, name="pool"), 
-                                              rdma = videomaster_kwargs.get("rdma", False), board = videomaster_kwargs.get("board", 0),
-                                              width = width, height = height, output = videomaster_kwargs.get("output", 0), progressive = videomaster_kwargs.get("progressive", True), framerate = videomaster_kwargs.get("framerate", 60), overlay = videomaster_kwargs.get("overlay", False))
-        
+        source = VideoStreamReplayerOp(
+            self, name="replayer", directory=self.data_path, **self.kwargs("replayer")
+        )
+
+        format_converter = FormatConverterOp(
+            self,
+            name="format_converter",
+            pool=BlockMemoryPool(self, name="pool", **source_pool_kwargs),
+            **self.kwargs("output_format_converter"),
+        )
+
+        visualizer = VideoMasterTransmitterOp(
+            self,
+            name="videomaster",
+            pool=UnboundedAllocator(self, name="pool"),
+            rdma=videomaster_kwargs.get("rdma", False),
+            board=videomaster_kwargs.get("board", 0),
+            width=width,
+            height=height,
+            output=videomaster_kwargs.get("output", 0),
+            progressive=videomaster_kwargs.get("progressive", True),
+            framerate=videomaster_kwargs.get("framerate", 60),
+            overlay=videomaster_kwargs.get("overlay", False),
+        )
+
         # Define the data flow between operators
         self.add_flow(source, format_converter)
         self.add_flow(format_converter, visualizer)
-        
+
+
 def parse_config():
     """
     Parse command line arguments and validate paths.
@@ -76,24 +95,40 @@ def parse_config():
     """
     # Default data path
     default_data_path = os.path.join(os.getcwd(), "data/endoscopy")
-    
+
     # Parse command line arguments
     parser = ArgumentParser(description="DeltaCast Transmitter demo application.")
-    parser.add_argument("-d", "--data_path", type=str, default=default_data_path, help="Path to the data directory. (default location:  %(default)s)")
-    parser.add_argument("-c", "--config", type=str, default=os.path.join(os.path.dirname(__file__
-    ), "deltacast_transmitter.yaml"), help="Path to the configuration file to override the default config file location. If not provided, the deltacast_transmitter.yaml in root directory will be used. (default location:  %(default)s)")
-    
+    parser.add_argument(
+        "-d",
+        "--data_path",
+        type=str,
+        default=default_data_path,
+        help="Path to the data directory. (default location:  %(default)s)",
+    )
+    parser.add_argument(
+        "-c",
+        "--config",
+        type=str,
+        default=os.path.join(os.path.dirname(__file__), "deltacast_transmitter.yaml"),
+        help="Path to the configuration file to override the default config file location. If not provided, the deltacast_transmitter.yaml in root directory will be used. (default location:  %(default)s)",
+    )
+
     args = parser.parse_args()
-    
+
     # Ensure the data path exists
     if not os.path.exists(args.data_path):
-        raise FileNotFoundError(f"Data path {args.data_path} does not exist. Use --data_path to specify the correct path.")
-    
-    #Ensure the configuration file exists
+        raise FileNotFoundError(
+            f"Data path {args.data_path} does not exist. Use --data_path to specify the correct path."
+        )
+
+    # Ensure the configuration file exists
     if not os.path.exists(args.config):
-        raise FileNotFoundError(f"Configuration file {args.config} does not exist at expected location. Use --config to specify the correct path.")
-    
+        raise FileNotFoundError(
+            f"Configuration file {args.config} does not exist at expected location. Use --config to specify the correct path."
+        )
+
     return args
+
 
 def main():
     try:
@@ -104,6 +139,7 @@ def main():
     except Exception as e:
         print(f"Error: {e}")
         exit(1)
+
 
 if __name__ == "__main__":
     main()
