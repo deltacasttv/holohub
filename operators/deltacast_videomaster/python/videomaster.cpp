@@ -169,6 +169,5 @@ PYBIND11_MODULE(_videomaster, m) {
            &VideoMasterTransmitterOp::setup,
            "spec"_a,
            doc::VideoMasterTransmitterOp::doc_setup);
-  ;
 }  // PYBIND11_MODULE NOLINT
 }  // namespace holoscan::ops
