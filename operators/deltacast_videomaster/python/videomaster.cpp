@@ -123,9 +123,12 @@ PYBIND11_MODULE(_videomaster, m) {
            "input"_a = "0"s,
            "pool"_a,
            "name"_a = "videomaster_source"s,
-           doc::VideoMasterSourceOp::doc_VideoMasterSourceOp)
-      .def_property_readonly("gxf_typename", &VideoMasterSourceOp::gxf_typename)
-      .def("initialize", &VideoMasterSourceOp::initialize);
+           doc::VideoMasterSourceOp::doc_VideoMasterSourceOp_python)
+      .def_property_readonly("gxf_typename",
+                             &VideoMasterSourceOp::gxf_typename,
+                             doc::VideoMasterSourceOp::doc_gxf_typename)
+      .def("initialize", &VideoMasterSourceOp::initialize, doc::VideoMasterSourceOp::doc_initialize)
+      .def("setup", &VideoMasterSourceOp::setup, "spec"_a, doc::VideoMasterSourceOp::doc_setup);
 
   py::class_<VideoMasterTransmitterOp,
              PyVideoMasterTransmitterOp,
@@ -156,8 +159,15 @@ PYBIND11_MODULE(_videomaster, m) {
            "overlay"_a = false,
            "name"_a = "videomaster_transmitter"s,
            doc::VideoMasterTransmitterOp::doc_VideoMasterTransmitterOp)
-      .def_property_readonly("gxf_typename", &VideoMasterTransmitterOp::gxf_typename)
-      .def("initialize", &VideoMasterTransmitterOp::initialize);
-  ;
+      .def_property_readonly("gxf_typename",
+                             &VideoMasterTransmitterOp::gxf_typename,
+                             doc::VideoMasterTransmitterOp::doc_gxf_typename)
+      .def("initialize",
+           &VideoMasterTransmitterOp::initialize,
+           doc::VideoMasterTransmitterOp::doc_initialize)
+      .def("setup",
+           &VideoMasterTransmitterOp::setup,
+           "spec"_a,
+           doc::VideoMasterTransmitterOp::doc_setup);
 }  // PYBIND11_MODULE NOLINT
 }  // namespace holoscan::ops
