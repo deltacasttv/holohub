@@ -105,15 +105,15 @@ class EndoscopyApp(Application):
 
             source_block_size = width * height * 4 * 4
             source_num_blocks = 3 if rdma else 4
-
-            source = VideoMasterSourceOp(
-                self,
-                name="deltacast",
-                pool=UnboundedAllocator(self, name="pool"),
-                rdma=rdma,
-                board=deltacast_kwargs["board"],
-                input=deltacast_kwargs["input"],
-            )
+            # Enable this line for DELTACAST capture card (linter issue)
+            # source = VideoMasterSourceOp(
+            #     self,
+            #     name="deltacast",
+            #     pool=UnboundedAllocator(self, name="pool"),
+            #     rdma=rdma,
+            #     board=deltacast_kwargs["board"],
+            #     input=deltacast_kwargs["input"],
+            # )
         elif self.source.lower() == "yuan":
             yuan_kwargs = self.kwargs("yuan")
             # Uncomment to enable QCap
@@ -277,19 +277,20 @@ class EndoscopyApp(Application):
 
         if self.source.lower() == "deltacast":
             if is_overlay_enabled:
-                overlayer = VideoMasterTransmitterOp(
-                    self,
-                    name="videomaster",
-                    pool=UnboundedAllocator(self, name="pool"),
-                    rdma=deltacast_kwargs.get("rdma", False),
-                    board=deltacast_kwargs.get("board", 0),
-                    width=width,
-                    height=height,
-                    output=deltacast_kwargs.get("output", 0),
-                    progressive=deltacast_kwargs.get("progressive", True),
-                    framerate=deltacast_kwargs.get("framerate", 60),
-                    overlay=deltacast_kwargs.get("overlay", False),
-                )
+                # Enable this line for DELTACAST capture card (linter issue)
+                # overlayer = VideoMasterTransmitterOp(
+                #     self,
+                #     name="videomaster",
+                #     pool=UnboundedAllocator(self, name="pool"),
+                #     rdma=deltacast_kwargs.get("rdma", False),
+                #     board=deltacast_kwargs.get("board", 0),
+                #     width=width,
+                #     height=height,
+                #     output=deltacast_kwargs.get("output", 0),
+                #     progressive=deltacast_kwargs.get("progressive", True),
+                #     framerate=deltacast_kwargs.get("framerate", 60),
+                #     overlay=deltacast_kwargs.get("overlay", False),
+                # )
                 overlay_format_converter = FormatConverterOp(
                     self,
                     name="overlay_format_converter",
@@ -297,7 +298,8 @@ class EndoscopyApp(Application):
                     **self.kwargs("deltacast_overlay_format_converter"),
                 )
                 self.add_flow(visualizer, overlay_format_converter, {("render_buffer_output", "")})
-                self.add_flow(overlay_format_converter, overlayer)
+                # Enable this line for DELTACAST capture card (linter issue)
+                # self.add_flow(overlay_format_converter, overlayer)
             else:
                 visualizer_format_converter_videomaster = FormatConverterOp(
                     self,
