@@ -27,7 +27,6 @@ from holoscan.resources import (
     BlockMemoryPool,
     CudaStreamPool,
     MemoryStorageType,
-    
     # Enable this line for DELTACAST capture card (linter issue)
     # UnboundedAllocator,
 )
