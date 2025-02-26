@@ -27,7 +27,9 @@ from holoscan.resources import (
     BlockMemoryPool,
     CudaStreamPool,
     MemoryStorageType,
-    UnboundedAllocator,
+    
+    # Enable this line for DELTACAST capture card (linter issue)
+    # UnboundedAllocator,
 )
 
 from holohub.aja_source import AJASourceOp
