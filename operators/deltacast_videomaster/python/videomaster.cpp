@@ -150,7 +150,7 @@ PYBIND11_MODULE(_videomaster, m) {
            "fragment"_a,
            "rdma"_a = false,
            "board"_a = "0"s,
-           "channel_index"_a = "0"s,
+           "output"_a = "0"s,
            "width"_a = "0"s,
            "height"_a = "0"s,
            "progressive"_a = true,
