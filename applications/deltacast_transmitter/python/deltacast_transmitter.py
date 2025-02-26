@@ -59,7 +59,7 @@ class DeltacastTransmitterApp(Application):
         
         visualizer = VideoMasterTransmitterOp(self, name="videomaster", pool = UnboundedAllocator(self, name="pool"), 
                                               rdma = videomaster_kwargs.get("rdma", False), board = videomaster_kwargs.get("board", 0),
-                                              width = width, height = height, channel_index = videomaster_kwargs.get("output", 0), progressive = videomaster_kwargs.get("progressive", True), framerate = videomaster_kwargs.get("framerate", 60), overlay = videomaster_kwargs.get("overlay", False))
+                                              width = width, height = height, output = videomaster_kwargs.get("output", 0), progressive = videomaster_kwargs.get("progressive", True), framerate = videomaster_kwargs.get("framerate", 60), overlay = videomaster_kwargs.get("overlay", False))
         
         # Define the data flow between operators
         self.add_flow(source, format_converter)
