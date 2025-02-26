@@ -28,118 +28,113 @@ namespace VideoMasterSourceOp {
 
 // PyVideoMasterSourceOp Constructor
 PYDOC(VideoMasterSourceOp, R"doc(
- Operator to get a video stream from a Deltacast capture card.
- 
- **==Named Inputs==**
- 
-     overlay_buffer_input : nvidia::gxf::VideoBuffer (optional)
-         The operator does not require a message on this input port in order for ``compute`` to be
-         called. If a message is found, and ``enable_overlay`` is ``True``, the image will be mixed
-         with the image captured by the AJA card. If ``enable_overlay`` is ``False``, any message on
-         this port will be ignored.
- 
- **==Named Outputs==**
- 
-     video_buffer_output : nvidia::gxf::VideoBuffer
-         The output video frame from the AJA capture card. If ``overlay_rdma`` is ``True``, this
-         video buffer will be on the device, otherwise it will be in pinned host memory.
-     overlay_buffer_output : nvidia::gxf::VideoBuffer (optional)
-         This output port will only emit a video buffer when ``enable_overlay`` is ``True``. If
-         ``overlay_rdma`` is ``True``, this video buffer will be on the device, otherwise it will be
-         in pinned host memory.
- 
- Parameters
- ----------
- fragment : holoscan.core.Fragment (constructor only)
-     The fragment that the operator belongs to.
- device : str, optional
-     The device to target (e.g., "0" for device 0). Default value is ``"0"``.
- channel : holoscan.operators.NTV2Channel or int, optional
-     The camera ``NTV2Channel`` to use for output (e.g., ``NTV2Channel.NTV2_CHANNEL1`` (``0``) or
-     "NTV2_CHANNEL1" (in YAML) for the first channel). Default value is ``NTV2Channel.NTV2_CHANNEL1``
-     (``"NTV2_CHANNEL1"`` in YAML).
- width : int, optional
-     Width of the video stream. Default value is ``1920``.
- height : int, optional
-     Height of the video stream. Default value is ``1080``.
- framerate : int, optional
-     Frame rate of the video stream. Default value is ``60``.
- interlaced : bool, optional
-     Whether or not the video is an interlaced format. Default value is ``False``
-     (``"false"`` in YAML).
- rdma : bool, optional
-     Boolean indicating whether RDMA is enabled. Default value is ``False`` (``"false"`` in YAML).
- enable_overlay : bool, optional
-     Boolean indicating whether a separate overlay channel is enabled. Default value is ``False``
-     (``"false"`` in YAML).
- overlay_channel : holoscan.operators.NTV2Channel or int, optional
-     The camera NTV2Channel to use for overlay output. Default value is ``NTV2Channel.NTV2_CHANNEL2``
-     (``"NTV2_CHANNEL2"`` in YAML).
- overlay_rdma : bool, optional
-     Boolean indicating whether RDMA is enabled for the overlay. Default value is ``False``
-     (``"false"`` in YAML).
- name : str, optional (constructor only)
-     The name of the operator. Default value is ``"aja_source"``.
- )doc")
+ Operator to get a video stream from a Deltacast capture card.)doc")
+
+PYDOC(VideoMasterSourceOp_python, R"doc(
+     Operator to get a video stream from a Deltacast capture card.
+
+     Parameters
+     ----------
+    fragment : Fragment
+        The fragment that the operator belongs to.
+    rdma : bool, optional
+        Boolean indicating whether RDMA is enabled.
+    board : int, optional
+        The board to target (e.g., "0" for board 0). Default value is ``0``.
+    input : int, optional
+        The RX channel of the baords (e.g., "1" for input 1). Default value is ``0``.
+    pool : Allocator of type UnboundedAllocator
+        The pool to use for memory allocation.
+    name : str, optional
+        The name of the operator.
+    )doc")
+
+PYDOC(gxf_typename, R"doc(
+The GXF type name of the resource.
+
+Returns
+-------
+str
+    The GXF type name of the resource
+)doc")
+
+PYDOC(setup, R"doc(
+Define the operator specification.
+
+Parameters
+----------
+spec : ``holoscan.core.OperatorSpec``
+    The operator specification.
+)doc")
+
+PYDOC(initialize, R"doc(
+Initialize the operator.
+
+This method is called only once when the operator is created for the first time,
+and uses a light-weight initialization.
+)doc")
 }  // namespace VideoMasterSourceOp
 
 namespace VideoMasterTransmitterOp {
 
 // PyVideoMasterTransmitterOp Constructor
 PYDOC(VideoMasterTransmitterOp, R"doc(
- Operator to get a video stream from a Deltacast capture card.
- 
- **==Named Inputs==**
- 
-     overlay_buffer_input : nvidia::gxf::VideoBuffer (optional)
-         The operator does not require a message on this input port in order for ``compute`` to be
-         called. If a message is found, and ``enable_overlay`` is ``True``, the image will be mixed
-         with the image captured by the AJA card. If ``enable_overlay`` is ``False``, any message on
-         this port will be ignored.
- 
- **==Named Outputs==**
- 
-     video_buffer_output : nvidia::gxf::VideoBuffer
-         The output video frame from the AJA capture card. If ``overlay_rdma`` is ``True``, this
-         video buffer will be on the device, otherwise it will be in pinned host memory.
-     overlay_buffer_output : nvidia::gxf::VideoBuffer (optional)
-         This output port will only emit a video buffer when ``enable_overlay`` is ``True``. If
-         ``overlay_rdma`` is ``True``, this video buffer will be on the device, otherwise it will be
-         in pinned host memory.
+ Operator to stream video from a Deltacast capture card.
+ )doc")
+
+PYDOC(VideoMasterTransmitterOp_python, R"doc(
+ Operator to stream video from a Deltacast capture card.
  
  Parameters
- ----------
- fragment : holoscan.core.Fragment (constructor only)
-     The fragment that the operator belongs to.
- device : str, optional
-     The device to target (e.g., "0" for device 0). Default value is ``"0"``.
- channel : holoscan.operators.NTV2Channel or int, optional
-     The camera ``NTV2Channel`` to use for output (e.g., ``NTV2Channel.NTV2_CHANNEL1`` (``0``) or
-     "NTV2_CHANNEL1" (in YAML) for the first channel). Default value is ``NTV2Channel.NTV2_CHANNEL1``
-     (``"NTV2_CHANNEL1"`` in YAML).
- width : int, optional
-     Width of the video stream. Default value is ``1920``.
- height : int, optional
-     Height of the video stream. Default value is ``1080``.
- framerate : int, optional
-     Frame rate of the video stream. Default value is ``60``.
- interlaced : bool, optional
-     Whether or not the video is an interlaced format. Default value is ``False``
-     (``"false"`` in YAML).
- rdma : bool, optional
-     Boolean indicating whether RDMA is enabled. Default value is ``False`` (``"false"`` in YAML).
- enable_overlay : bool, optional
-     Boolean indicating whether a separate overlay channel is enabled. Default value is ``False``
-     (``"false"`` in YAML).
- overlay_channel : holoscan.operators.NTV2Channel or int, optional
-     The camera NTV2Channel to use for overlay output. Default value is ``NTV2Channel.NTV2_CHANNEL2``
-     (``"NTV2_CHANNEL2"`` in YAML).
- overlay_rdma : bool, optional
-     Boolean indicating whether RDMA is enabled for the overlay. Default value is ``False``
-     (``"false"`` in YAML).
- name : str, optional (constructor only)
-     The name of the operator. Default value is ``"aja_Transmitter"``.
+     ----------
+    fragment : Fragment
+        The fragment that the operator belongs to.
+    rdma : bool, optional
+        Boolean indicating whether RDMA is enabled.
+    board : int, optional
+        The board to target (e.g., "0" for board 0). Default value is ``0``.
+    output : int, optional
+        The TX channel of the baords (e.g., "1" for input 1). Default value is ``0``.
+    width : int, optional
+        Width of the video stream. Default value is ``1920``.
+    height : int, optional
+        Height of the video stream. Default value is ``1080``.
+    progressive : bool, optional
+        Whether or not the video is an interlaced format. Default value is ``True``.
+    framerate : int, optional
+        Frame rate of the video stream. Default value is ``60``.
+    pool : Allocator of type UnboundedAllocator
+        The pool to use for memory allocation.
+    enable_overlay : bool, optional
+        Boolean indicating whether a overlay processing is done by the board or not. Default value is ``False``.
+    name : str, optional
+        The name of the operator.
  )doc")
+
+PYDOC(gxf_typename, R"doc(
+The GXF type name of the resource.
+
+Returns
+-------
+str
+    The GXF type name of the resource
+)doc")
+
+PYDOC(setup, R"doc(
+Define the operator specification.
+
+Parameters
+----------
+spec : ``holoscan.core.OperatorSpec``
+    The operator specification.
+)doc")
+
+PYDOC(initialize, R"doc(
+Initialize the operator.
+
+This method is called only once when the operator is created for the first time,
+and uses a light-weight initialization.
+)doc")
 
 }  // namespace VideoMasterTransmitterOp
 
