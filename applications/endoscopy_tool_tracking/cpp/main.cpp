@@ -222,7 +222,8 @@ class App : public holoscan::Application {
         // Overlay buffer flow between source and visualizer
         auto overlayer = make_operator<ops::VideoMasterTransmitterOp>(
             "videomaster_overlayer",
-            from_config("videomaster"),
+            from_config("deltacast"),
+            from_config("external_source"),
             Arg("pool") = make_resource<UnboundedAllocator>("pool"));
         auto overlay_format_converter_videomaster = make_operator<ops::FormatConverterOp>(
             "overlay_format_converter",
