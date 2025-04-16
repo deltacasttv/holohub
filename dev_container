@@ -387,11 +387,9 @@ get_mount_device_options() {
 
     # Deltacast capture boards and Videomaster SDK
     for i in 0 1 2 3; do
-        # Deltacast SDI capture board
         if [ -e /dev/delta-x380${i} ]; then
             mount_device_opt+="${prefix}--device=/dev/delta-x380${i}:/dev/delta-x380${i}${postfix}"
         fi
-        # Deltacast HDMI capture board
         if [ -e /dev/delta-x350${i} ]; then
             mount_device_opt+="${prefix}--device=/dev/delta-x350${i}:/dev/delta-x350${i}${postfix}"
         fi
