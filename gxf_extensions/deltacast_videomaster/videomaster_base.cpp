@@ -129,7 +129,11 @@ gxf::Expected<void> VideoMasterBase::open_stream() {
       _video_information =
         std::unique_ptr<VideoMasterSdiVideoInformation>(new VideoMasterSdiVideoInformation());
       break;
-    case VHD_CHNTYPE_HDMI:
+    case VHD_CHNTYPE_HDMI_TMDS:
+    case VHD_CHNTYPE_HDMI_FRL3:
+    case VHD_CHNTYPE_HDMI_FRL4:
+    case VHD_CHNTYPE_HDMI_FRL5:
+    case VHD_CHNTYPE_HDMI_FRL6:
     case VHD_CHNTYPE_DISPLAYPORT:
       _video_information =
         std::unique_ptr<VideoMasterDvVideoInformation>(new VideoMasterDvVideoInformation());
