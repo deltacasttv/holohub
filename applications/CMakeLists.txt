@@ -41,14 +41,6 @@ add_holohub_application(cvcuda_basic DEPENDS OPERATORS cvcuda_holoscan_interop)
 
 add_subdirectory(dds)
 
-add_holohub_application(deltacast_transmitter DEPENDS
-                        OPERATORS deltacast_videomaster
-                        )
-
-add_holohub_application(deltacast_receiver DEPENDS
-                        OPERATORS deltacast_videomaster
-                        )
-
 add_holohub_application(depth_anything_v2)
 
 add_subdirectory(distributed)
@@ -62,7 +54,6 @@ add_holohub_application(endoscopy_tool_tracking DEPENDS
                         OPERATORS lstm_tensor_rt_inference
                                   tool_tracking_postprocessor
                         OPTIONAL  aja_source
-                                  deltacast_videomaster
                                   slang_shader
                                   yuan_qcap
                                   vtk_renderer)

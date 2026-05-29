@@ -1,6 +1,18 @@
 {
 	"application": {
-		"name": "Endoscopy Tool Tracking",
+		"name": "Endoscopy Tool Tracking",		
+		"dependencies": {
+			"modules": [
+				{
+				"name": "holoscan-deltacast",
+				"source": {
+					"git_url": "https://github.com/deltacasttv/holoscan-modules.git",
+					"ref": "36deda4f925dfb7aaa69df70459246f154f4dcdd"
+				},
+				"provides_operators": ["deltacast_videomaster"]
+			}
+			]
+		},
 		"authors": [
 			{
 				"name": "Holoscan Team",
@@ -49,6 +61,16 @@
 					},
 				"run": {
 					"command": "<holohub_app_bin>/endoscopy_tool_tracking --data <holohub_data_dir>/endoscopy",
+					"workdir": "holohub_bin"
+				}
+			},
+			"deltacast": {
+				"description": "Run the application with Deltacast VideoMaster source",
+				"build": {
+					"cmake_options": ["-DHOLOHUB_BUILD_PYTHON=OFF"]
+					},
+				"run": {
+					"command": "<holohub_app_bin>/endoscopy_tool_tracking --source deltacast",
 					"workdir": "holohub_bin"
 				}
 			}
